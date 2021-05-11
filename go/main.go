@@ -30,7 +30,7 @@ func main() {
 	for _, v := range csv_data_list[1:] {
 		eachuserinfo := strings.Split(v, ",")
 		if len(eachuserinfo) > 1 {
-			user_ids = append(user_ids, strings.TrimSpace(eachuserinfo[1]))
+			user_ids = append(user_ids, strings.ReplaceAll(strings.TrimSpace(eachuserinfo[1]), "\"", ""))
 		}
 	}
 
