@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"strings"
 	"sync"
 	"time"
@@ -33,13 +34,16 @@ func main() {
 			user_ids = append(user_ids, strings.ReplaceAll(strings.TrimSpace(eachuserinfo[1]), "\"", ""))
 		}
 	}
-
+	logFileName := "run.log"
+	f, _ := initalizeLogFile(logFileName)
+	defer f.Close()
+	log.SetOutput(f)
 	wg := sync.WaitGroup{}
 	for _, user := range user_ids {
 		wg.Add(1)
 		go func(apiurl, apiversion, userid, action, sessionid string) {
-			status := ModifyUserState(apiurl, apiversion, userid, action, sessionid)
-			fmt.Println("Finished Processing User", userid, "With status :", status)
+			_, output := ModifyUserState(apiurl, apiversion, userid, action, sessionid)
+			log.Println("Finished Processing User", userid, "With status :", output)
 			wg.Done()
 		}(*apiurl, *apiversion, user, *action, session.SessionId)
 	}
