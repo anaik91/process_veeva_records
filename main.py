@@ -62,7 +62,7 @@ def trigger_concurrently(base_url,api_version,username,password,useridlistchunk,
     else:
         state = enable
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
         for userids in useridlistchunk:
             sessionId = get_session_id(base_url,api_version,username,password)
